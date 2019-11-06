@@ -1,4 +1,4 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.core
 
 import android.util.Log
 import androidx.annotation.MainThread

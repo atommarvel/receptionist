@@ -1,6 +1,9 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.core
 
 import android.app.Application
+import com.radiantmood.receptionist.di.AppComponent
+import com.radiantmood.receptionist.di.ContextModule
+import com.radiantmood.receptionist.di.DaggerAppComponent
 
 class App : Application() {
 

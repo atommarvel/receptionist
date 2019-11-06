@@ -1,5 +1,6 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.di
 
+import com.radiantmood.receptionist.feature.QuestHordeFragment
 import dagger.Component
 import javax.inject.Singleton
 

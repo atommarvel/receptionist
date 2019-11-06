@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/questCollectionFragment"
-        android:name="com.radiantmood.receptionist.QuestHordeFragment"
+        android:name="com.radiantmood.receptionist.feature.QuestHordeFragment"
         android:label="quest_collection_fragment"
         tools:layout="@layout/quest_collection_fragment" />
 </navigation>

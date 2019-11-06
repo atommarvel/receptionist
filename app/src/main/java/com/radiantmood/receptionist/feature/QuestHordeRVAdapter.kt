@@ -1,8 +1,11 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.feature
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
+import com.radiantmood.receptionist.core.BaseViewHolder
+import com.radiantmood.receptionist.data.model.Quest
 import com.radiantmood.receptionist.databinding.QuestItemBinding
 
 class QuestHordeRVAdapter(val quests: MutableList<Quest>) : RecyclerView.Adapter<QuestHordeRVAdapter.ViewHolder>() {

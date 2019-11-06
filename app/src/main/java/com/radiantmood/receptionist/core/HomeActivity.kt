@@ -1,7 +1,8 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.core
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.radiantmood.receptionist.R
 
 class HomeActivity : AppCompatActivity() {
 

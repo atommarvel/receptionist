@@ -1,4 +1,4 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.core
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

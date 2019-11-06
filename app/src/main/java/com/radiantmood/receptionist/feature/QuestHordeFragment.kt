@@ -1,4 +1,4 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.feature
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.radiantmood.receptionist.R
+import com.radiantmood.receptionist.core.App
 import kotlinx.android.synthetic.main.quest_collection_fragment.*
 import javax.inject.Inject
 

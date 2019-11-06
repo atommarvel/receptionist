@@ -1,5 +1,6 @@
-package com.radiantmood.receptionist
+package com.radiantmood.receptionist.data.repo
 
+import com.radiantmood.receptionist.data.model.Quest
 import javax.inject.Inject
 
 class QuestRepo @Inject constructor() {
