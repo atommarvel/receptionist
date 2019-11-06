@@ -1,30 +1,23 @@
 package com.radiantmood.receptionist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.radiantmood.receptionist.databinding.QuestItemBinding
 
-class QuestHordeRVAdapter(val quests: MutableList<Quest>) :
-    RecyclerView.Adapter<QuestHordeRVAdapter.ViewHolder>() {
+class QuestHordeRVAdapter(val quests: MutableList<Quest>) : RecyclerView.Adapter<QuestHordeRVAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.quest_item, parent, false)
-            .wrap()
-
-    private fun View.wrap(): ViewHolder = ViewHolder(this)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = QuestItemBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
+    }
 
     override fun getItemCount(): Int = quests.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.onBind(quests[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(quests[position])
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        fun onBind(quest: Quest) {
-
-        }
-
+    inner class ViewHolder(binding: QuestItemBinding) : BaseViewHolder(binding) {
+        override val modelId = BR.quest
     }
 }
