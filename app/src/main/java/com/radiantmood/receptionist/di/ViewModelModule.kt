@@ -11,5 +11,5 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(QuestHordeViewModel::class)
-    abstract fun bindMyViewModel(myViewModel: QuestHordeViewModel): ViewModel
+    abstract fun bindQuestHordeViewModel(questHordeViewModel: QuestHordeViewModel): ViewModel
 }

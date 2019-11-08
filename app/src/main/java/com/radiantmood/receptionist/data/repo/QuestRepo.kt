@@ -4,7 +4,7 @@ import com.radiantmood.receptionist.data.model.Quest
 import javax.inject.Inject
 
 class QuestRepo @Inject constructor() {
-    fun getQuests() = listOf<Quest>(
+    fun getQuests() = listOf(
         Quest("title1"),
         Quest("title2"),
         Quest("title3"),

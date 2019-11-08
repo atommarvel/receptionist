@@ -3,16 +3,31 @@ package com.radiantmood.receptionist.feature
 import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.radiantmood.receptionist.core.ItemTouchHelperAdapter
 import com.radiantmood.receptionist.ext.ActionState
 import com.radiantmood.receptionist.ext.isDragging
 import com.radiantmood.receptionist.ext.isIdle
 import com.radiantmood.receptionist.ext.lTag
 
-class ItemTouchHelperCallback(private val adapterCallback: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+class ItemTouchHelperCallback(private val eventListener: ItemTouchHelperEventListener) : ItemTouchHelper.Callback() {
 
+    /**
+     * Tracks last [ActionState] provided by the [onSelectedChanged]'s action param.
+     * Used to detect an item being long-pressed, but then not dragged (which starts multi-select).
+     */
     private var previousActionState: ActionState = ItemTouchHelper.ACTION_STATE_IDLE
+
+    /**
+     * Tracks if an item moves during an [ItemTouchHelper.ACTION_STATE_DRAG] session.
+     * Used to detect an item being long-pressed, but then not dragged (which starts multi-select).
+     */
     private var didItemMove: Boolean = false
+
+    /**
+     * The viewholder is null when [onSelectedChanged] is triggered with an [ItemTouchHelper.ACTION_STATE_IDLE].
+     * Because of this we have to take note of where the viewholder started, so we know which item to start off as
+     * selected in multi-select mode if the item did *not* move ([didItemMove]).
+     * Used to detect an item being long-pressed, but then not dragged (which starts multi-select).
+     */
     private var viewHolderStartingPosition: Int = -1
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -30,13 +45,13 @@ class ItemTouchHelperCallback(private val adapterCallback: ItemTouchHelperAdapte
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        adapterCallback.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        eventListener.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         didItemMove = true
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        adapterCallback.onItemDismiss(viewHolder.adapterPosition)
+        eventListener.onItemDismiss(viewHolder.adapterPosition)
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -55,10 +70,10 @@ class ItemTouchHelperCallback(private val adapterCallback: ItemTouchHelperAdapte
 
     private fun onDraggingFinished(position: Int) {
         if (!didItemMove) {
-            adapterCallback.onLongPressSelect(position)
+            eventListener.onLongPressSelect(position)
         }
+        // reset multi-select tracking
         didItemMove = false
         viewHolderStartingPosition = -1
     }
-
 }

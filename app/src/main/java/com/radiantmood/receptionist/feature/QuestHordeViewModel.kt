@@ -2,7 +2,6 @@ package com.radiantmood.receptionist.feature
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.radiantmood.receptionist.core.ItemTouchHelperAdapter
 import com.radiantmood.receptionist.data.model.Quest
 import com.radiantmood.receptionist.data.repo.QuestRepo
 import com.radiantmood.receptionist.ext.lTag
@@ -10,7 +9,8 @@ import java.util.*
 import javax.inject.Inject
 
 
-class QuestHordeViewModel @Inject constructor(private val questRepo: QuestRepo) : ViewModel(), ItemTouchHelperAdapter {
+class QuestHordeViewModel @Inject constructor(private val questRepo: QuestRepo) : ViewModel(),
+    ItemTouchHelperEventListener {
 
     private val quests = mutableListOf<Quest>()
     val adapter = QuestHordeRVAdapter(quests)
