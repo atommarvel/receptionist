@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.radiantmood.receptionist.R
 import com.radiantmood.receptionist.core.App
@@ -40,6 +41,7 @@ class QuestHordeFragment : Fragment() {
     private fun setupRecyclerView() {
         rvQuests.layoutManager = LinearLayoutManager(context)
         rvQuests.adapter = viewModel.adapter
+        ItemTouchHelper(ItemTouchHelperCallback(viewModel)).attachToRecyclerView(rvQuests)
     }
 
 }
