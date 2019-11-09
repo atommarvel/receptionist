@@ -1,8 +1,10 @@
 package com.radiantmood.receptionist.data.repo
 
 import com.radiantmood.receptionist.data.model.Quest
+import com.radiantmood.receptionist.di.PerFragment
 import javax.inject.Inject
 
+@PerFragment
 class QuestRepo @Inject constructor() {
     fun getQuests() = listOf(
         Quest("title1"),

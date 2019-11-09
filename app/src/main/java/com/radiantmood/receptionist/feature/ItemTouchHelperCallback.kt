@@ -8,7 +8,10 @@ import com.radiantmood.receptionist.ext.isDragging
 import com.radiantmood.receptionist.ext.isIdle
 import com.radiantmood.receptionist.ext.lTag
 
-class ItemTouchHelperCallback(private val eventListener: ItemTouchHelperEventListener) : ItemTouchHelper.Callback() {
+class ItemTouchHelperCallback(
+    private val eventListener: ItemTouchHelperEventListener,
+    private val isActionModeEnabled: () -> Boolean
+) : ItemTouchHelper.Callback() {
 
     /**
      * Tracks last [ActionState] provided by the [onSelectedChanged]'s action param.
@@ -36,9 +39,9 @@ class ItemTouchHelperCallback(private val eventListener: ItemTouchHelperEventLis
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
-    override fun isLongPressDragEnabled(): Boolean = true
+    override fun isLongPressDragEnabled(): Boolean = !isActionModeEnabled()
 
-    override fun isItemViewSwipeEnabled(): Boolean = true
+    override fun isItemViewSwipeEnabled(): Boolean = !isActionModeEnabled()
 
     override fun onMove(
         recyclerView: RecyclerView,

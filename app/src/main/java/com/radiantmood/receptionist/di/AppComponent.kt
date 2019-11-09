@@ -1,18 +1,11 @@
 package com.radiantmood.receptionist.di
 
-import com.radiantmood.receptionist.feature.QuestHordeFragment
+import android.app.Application
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(
-    modules =
-    [
-        ViewModelModule::class,
-        ViewModelFactoryModule::class,
-        ContextModule::class
-    ]
-)
+@Component(modules = [ContextModule::class])
 interface AppComponent {
-    fun inject(questHordeFragment: QuestHordeFragment)
+    fun inject(app: Application)
 }
