@@ -1,6 +1,7 @@
 package com.radiantmood.receptionist.feature
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.radiantmood.receptionist.core.SingleLiveEvent
 import com.radiantmood.receptionist.data.model.Quest
@@ -15,16 +16,16 @@ class QuestHordeViewModel @Inject constructor(
 ) : ViewModel(),
     ItemTouchHelperEventListener, ActionModeCallback {
 
-    private val quests = mutableListOf<Quest>()
-    val adapter = QuestHordeRVAdapter(quests)
-
     val actionModeLiveData = SingleLiveEvent<ActionModeInfo>()
 
     data class ActionModeInfo(val enable: Boolean, val position: Int)
 
+    private val quests: MutableList<Quest> = mutableListOf()
+    val questsLiveData: MutableLiveData<List<Quest>> = MutableLiveData()
+
     fun fetchQuests() {
-        adapter.quests.addAll(questRepo.getQuests())
-        adapter.notifyDataSetChanged()
+        quests.addAll(questRepo.getQuests())
+        questsLiveData.value = quests
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
@@ -32,12 +33,12 @@ class QuestHordeViewModel @Inject constructor(
         for (i in fromPosition until toPosition) {
             Collections.swap(quests, i, i + swapDirection)
         }
-        adapter.notifyItemMoved(fromPosition, toPosition)
+        questsLiveData.value = quests
     }
 
     override fun onItemDismiss(position: Int) {
         quests.removeAt(position)
-        adapter.notifyItemRemoved(position)
+        questsLiveData.value = quests
     }
 
     override fun onLongPressSelect(position: Int) {

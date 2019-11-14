@@ -23,9 +23,10 @@ class QuestHordeFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
-
     @Inject
     lateinit var actionModeManager: ActionModeManager
+    @Inject
+    lateinit var adapter: QuestHordeRVAdapter
 
     private val viewModel: QuestHordeViewModel by lazy {
         ViewModelProviders.of(this, vmFactory).get(QuestHordeViewModel::class.java)
@@ -51,10 +52,13 @@ class QuestHordeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         rvQuests.layoutManager = LinearLayoutManager(context)
-        rvQuests.adapter = viewModel.adapter
+        rvQuests.adapter = adapter
         ItemTouchHelper(
             ItemTouchHelperCallback(viewModel, actionModeManager::isActionModeEnabled)
         ).attachToRecyclerView(rvQuests)
+        viewModel.questsLiveData.observe(this, Observer {
+            adapter.submitList(ArrayList(it))
+        })
     }
 
 

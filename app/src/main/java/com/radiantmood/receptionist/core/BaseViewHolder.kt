@@ -1,18 +1,22 @@
 package com.radiantmood.receptionist.core
 
+import androidx.annotation.CallSuper
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+/**
+ * @param modelId The variable id used by [ViewDataBinding.setVariable].
+ */
+abstract class BaseViewHolder<T>(private val binding: ViewDataBinding, private val modelId: Int) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    /**
-     * The variable id used by [ViewDataBinding.setVariable].
-     */
-    abstract val modelId: Int
+    var model: T? = null
 
-    fun bind(any: Any) {
+    @CallSuper
+    fun bind(newModel: T) {
+        model = newModel
         binding.apply {
-            setVariable(modelId, any)
+            setVariable(modelId, model)
             executePendingBindings()
         }
     }
