@@ -13,7 +13,7 @@ class ActionModeManager @Inject constructor() {
 
     private var actionMode: ActionMode? = null
 
-    fun isActionModeEnabled() = actionMode != null
+    val isActionModeEnabled: Boolean get() = actionMode != null
 
     fun finishActionMode(fragment: Fragment) {
         actionMode = null
@@ -24,5 +24,4 @@ class ActionModeManager @Inject constructor() {
         actionMode = (fragment.activity as? AppCompatActivity)?.startSupportActionMode(callback)
         (fragment.activity as? HomeActivity)?.toolbarVisibility = View.GONE
     }
-
 }

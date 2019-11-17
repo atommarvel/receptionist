@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,10 +16,11 @@ import com.radiantmood.receptionist.R
 import com.radiantmood.receptionist.core.App
 import com.radiantmood.receptionist.di.DaggerFragmentComponent
 import com.radiantmood.receptionist.di.FragmentComponent
+import com.radiantmood.receptionist.ext.toggleSelected
 import kotlinx.android.synthetic.main.quest_collection_fragment.*
 import javax.inject.Inject
 
-class QuestHordeFragment : Fragment() {
+class QuestHordeFragment : Fragment(), ActionModeCallback {
 
     lateinit var fragmentComponent: FragmentComponent
 
@@ -60,23 +62,36 @@ class QuestHordeFragment : Fragment() {
         viewModel.questsLiveData.observe(this, Observer {
             adapter.submitList(ArrayList(it))
         })
-        adapter.itemClickObserver.observe(this, Observer {
-            Toast.makeText(context, "${it.title} tapped", Toast.LENGTH_SHORT).show()
+        adapter.itemClickObserver.observe(this, Observer { clickEvent ->
+            if (actionModeManager.isActionModeEnabled) {
+                toggleRVItemSelected(clickEvent.position)
+            }
+            Toast.makeText(context, "${clickEvent.quest?.title} tapped", Toast.LENGTH_SHORT).show()
         })
     }
 
 
     private fun observeActionModeInfo() {
         viewModel.actionModeLiveData.observe(this, Observer { info ->
-            when {
-                !actionModeManager.isActionModeEnabled() && info.enable -> {
-                    actionModeManager.initActionMode(this, viewModel)
-                    (rvQuests.layoutManager as LinearLayoutManager).findViewByPosition(info.position)?.isSelected = true
-                }
-                !info.enable -> {
-                    actionModeManager.finishActionMode(this)
-                }
+            if (!actionModeManager.isActionModeEnabled && info.enable) {
+                actionModeManager.initActionMode(this, this)
+                toggleRVItemSelected(info.position)
             }
         })
+    }
+
+    private fun toggleRVItemSelected(position: Int) {
+        adapter.toggleSelected(position)
+        rvQuests.toggleSelected(position)
+    }
+
+    override fun completeSelectedQuests() {
+        viewModel.completeQuests(adapter.selectionTracker)
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        actionModeManager.finishActionMode(this)
+        adapter.selectionTracker.clear()
+        adapter.notifyDataSetChanged()
     }
 }

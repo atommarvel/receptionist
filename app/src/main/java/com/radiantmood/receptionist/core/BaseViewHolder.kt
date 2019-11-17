@@ -13,11 +13,12 @@ abstract class BaseViewHolder<T>(private val binding: ViewDataBinding, private v
     var model: T? = null
 
     @CallSuper
-    open fun bind(newModel: T) {
+    open fun bind(newModel: T, isSelected: Boolean) {
         model = newModel
         binding.apply {
             setVariable(modelId, model)
             executePendingBindings()
         }
+        binding.root.isActivated = isSelected
     }
 }
