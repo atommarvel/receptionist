@@ -13,7 +13,7 @@ abstract class BaseViewHolder<T>(private val binding: ViewDataBinding, private v
     var model: T? = null
 
     @CallSuper
-    fun bind(newModel: T) {
+    open fun bind(newModel: T) {
         model = newModel
         binding.apply {
             setVariable(modelId, model)
