@@ -29,8 +29,10 @@ class QuestHordeViewModel @Inject constructor(
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        val range =
+            if (fromPosition < toPosition) fromPosition.until(toPosition) else fromPosition.downTo(toPosition + 1)
         val swapDirection = if (fromPosition < toPosition) 1 else -1
-        for (i in fromPosition until toPosition) {
+        for (i in range) {
             Collections.swap(quests, i, i + swapDirection)
         }
         questsLiveData.value = quests
