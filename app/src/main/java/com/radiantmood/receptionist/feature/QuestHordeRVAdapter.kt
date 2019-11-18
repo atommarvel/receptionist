@@ -9,14 +9,13 @@ import com.radiantmood.receptionist.core.BaseViewHolder
 import com.radiantmood.receptionist.core.Differ
 import com.radiantmood.receptionist.data.model.Quest
 import com.radiantmood.receptionist.databinding.QuestItemBinding
-import com.radiantmood.receptionist.ext.togglePresence
 
 class QuestHordeRVAdapter(questDiffer: Differ<Quest>) :
     ListAdapter<Quest, QuestHordeRVAdapter.ViewHolder>(questDiffer) {
 
     val itemClickObserver = MutableLiveData<ClickEvent>()
-    // TODO: Should probably be owned by the ViewModel. If so, then make ViewModel the ActionModeCallback again.
-    val selectionTracker = mutableSetOf<Quest>()
+
+    var isSelected: ((quest: Quest) -> Boolean)? = null
 
     data class ClickEvent(val quest: Quest?, val position: Int)
 
@@ -28,13 +27,8 @@ class QuestHordeRVAdapter(questDiffer: Differ<Quest>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val quest = getItem(position)
-        val isSelected = selectionTracker.contains(quest)
+        val isSelected = isSelected?.invoke(quest) == true
         holder.bind(quest, isSelected)
-    }
-
-    fun toggleSelected(position: Int) {
-        val quest = getItem(position)
-        selectionTracker.togglePresence(quest)
     }
 
     inner class ViewHolder(binding: QuestItemBinding) : BaseViewHolder<Quest>(binding, BR.quest) {

@@ -1,19 +1,22 @@
 package com.radiantmood.receptionist.feature
 
+import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.radiantmood.receptionist.core.SingleLiveEvent
 import com.radiantmood.receptionist.data.model.Quest
 import com.radiantmood.receptionist.data.repo.QuestRepo
+import com.radiantmood.receptionist.ext.togglePresence
 import java.util.*
 import javax.inject.Inject
 
 
 class QuestHordeViewModel @Inject constructor(
     private val questRepo: QuestRepo
-) : ViewModel(), ItemTouchHelperEventListener {
+) : ViewModel(), ItemTouchHelperEventListener, ActionModeCallback {
 
     val actionModeLiveData = SingleLiveEvent<ActionModeInfo>()
+    val selectionTracker = mutableSetOf<Quest>()
 
     data class ActionModeInfo(val enable: Boolean, val position: Int)
 
@@ -22,11 +25,6 @@ class QuestHordeViewModel @Inject constructor(
 
     fun fetchQuests() {
         quests.addAll(questRepo.getQuests())
-        questsLiveData.value = quests
-    }
-
-    fun completeQuests(questsToComplete: Collection<Quest>) {
-        quests.removeAll(questsToComplete)
         questsLiveData.value = quests
     }
 
@@ -48,5 +46,22 @@ class QuestHordeViewModel @Inject constructor(
     override fun onLongPressSelect(position: Int) {
         actionModeLiveData.value = ActionModeInfo(true, position)
     }
+
+    override fun completeSelectedQuests() {
+        quests.removeAll(selectionTracker)
+        questsLiveData.value = quests
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        selectionTracker.clear()
+        actionModeLiveData.value = ActionModeInfo(false, -1)
+    }
+
+    fun toggleSelected(position: Int) {
+        val quest = quests[position]
+        selectionTracker.togglePresence(quest)
+    }
+
+    fun isSelected(quest: Quest) = selectionTracker.contains(quest)
 }
 
