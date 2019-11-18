@@ -86,5 +86,6 @@ class QuestHordeFragment : Fragment() {
     private fun toggleRVItemSelected(position: Int) {
         viewModel.toggleSelected(position)
         rvQuests.toggleSelected(position)
+        actionModeManager.setTitle("${viewModel.selectedCount()} Selected")
     }
 }

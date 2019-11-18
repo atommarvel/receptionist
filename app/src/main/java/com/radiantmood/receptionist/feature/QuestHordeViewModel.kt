@@ -63,5 +63,7 @@ class QuestHordeViewModel @Inject constructor(
     }
 
     fun isSelected(quest: Quest) = selectionTracker.contains(quest)
+
+    fun selectedCount() = selectionTracker.size
 }
 

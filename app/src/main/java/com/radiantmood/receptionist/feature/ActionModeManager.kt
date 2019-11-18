@@ -24,4 +24,8 @@ class ActionModeManager @Inject constructor() {
         actionMode = (fragment.activity as? AppCompatActivity)?.startSupportActionMode(callback)
         (fragment.activity as? HomeActivity)?.toolbarVisibility = View.GONE
     }
+
+    fun setTitle(title: String) {
+        actionMode?.title = title
+    }
 }
